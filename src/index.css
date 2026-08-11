@@ -1,0 +1,1830 @@
+/* =========================================================
+   CODEUTSAVA 10.0 — Among Us themed landing page styles
+   Organized by section. Colors and fonts are defined once
+   as CSS variables at the top so they're easy to tweak.
+========================================================= */
+
+:root {
+  /* Among Us-inspired spaceship palette — navy/teal, never black */
+  --space-deep: #0b2633;
+  --space-navy: #123b4a;
+  --space-panel: #1b5263;
+  --space-panel-light: #226178;
+  --space-border: #2f6d81;
+  --space-contrast: #6d9fb2;
+
+  /* crew accent colors, used intentionally across sections
+     instead of one repeated purple/blue everywhere */
+  --crew-red: #e53935;
+  --crew-yellow: #facc15;
+  --crew-green: #22c55e;
+  --crew-blue: #3b82f6;
+  --crew-purple: #8b5cf6;
+  --crew-orange: #f97316;
+  --crew-pink: #f472b6;
+  --crew-cyan: #67e8f9;
+  --crew-teal: #67e8f9;
+
+  /* text */
+  --text-primary: #f5f7f8;
+  --text-muted: #b8d0d8;
+
+  /* fonts */
+  --font-display: 'Bowlby One SC', 'Trebuchet MS', sans-serif;
+  --font-body: 'Nunito Sans', system-ui, sans-serif;
+
+  --radius-md: 10px;
+  --radius-lg: 18px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--space-deep);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+.page {
+  position: relative;
+  min-height: 100vh;
+}
+
+.page-fade-in {
+  animation: fadeIn 0.8s ease both;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================================================
+   Buttons
+========================================================= */
+
+.btn {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+  padding: 0.95rem 1.9rem;
+  border-radius: var(--radius-md);
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.btn-primary {
+  background: var(--crew-red);
+  color: #fff;
+  box-shadow: 0 6px 0 #8a2622;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 0 #8a2622;
+}
+
+.btn-primary:active {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 #8a2622;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-primary);
+  border-color: var(--space-border);
+}
+
+.btn-ghost:hover {
+  border-color: var(--crew-teal);
+  color: var(--crew-teal);
+}
+
+/* the primary hero CTA styled like an Among Us emergency/task button:
+   a bold red circle-ish pill with a ring, without literally copying
+   the game's UI */
+.btn-emergency {
+  position: relative;
+  background: var(--crew-red);
+  color: #fff;
+  box-shadow: 0 6px 0 #8a2622;
+  padding-left: 2.3rem;
+}
+
+.btn-emergency:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 0 #8a2622;
+}
+
+.btn-emergency:active {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 #8a2622;
+}
+
+.btn-emergency-ring {
+  position: absolute;
+  left: 0.85rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+}
+
+/* =========================================================
+   Space background — colorful nebula, stars, particles,
+   planets, asteroids, shooting stars
+========================================================= */
+
+.space-background {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  z-index: 0;
+  pointer-events: none;
+  /* one quiet vignette instead of a multicolor gradient blend —
+     the color now comes from stars, planets and crewmates instead
+     of the backdrop itself */
+  background:
+    radial-gradient(ellipse 50% 40% at 50% 0%, rgba(103, 232, 249, 0.07), transparent 65%),
+    linear-gradient(180deg, var(--space-deep) 0%, var(--space-navy) 100%);
+}
+
+.star {
+  position: absolute;
+  background: #ffffff;
+  border-radius: 50%;
+  animation: twinkle ease-in-out infinite;
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.2;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.4);
+  }
+}
+
+.space-particle {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #9fc7ff;
+  opacity: 0.55;
+  animation: drift linear infinite;
+}
+
+@keyframes drift {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.65;
+  }
+  90% {
+    opacity: 0.65;
+  }
+  100% {
+    transform: translate(-60px, 90px);
+    opacity: 0;
+  }
+}
+
+.nebula {
+  position: absolute;
+  width: 34vw;
+  height: 34vw;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.12;
+  mix-blend-mode: screen;
+}
+
+.nebula-one {
+  top: -8%;
+  left: -12%;
+  background: var(--crew-blue);
+}
+
+.nebula-two {
+  bottom: -18%;
+  right: -12%;
+  background: var(--crew-pink);
+  opacity: 0.08;
+}
+
+.nebula-three {
+  top: 35%;
+  left: 55%;
+  width: 24vw;
+  height: 24vw;
+  background: var(--crew-teal);
+  opacity: 0.08;
+}
+
+.planet {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.85;
+  box-shadow: inset -10px -10px 24px rgba(0, 0, 0, 0.4);
+  animation: driftPlanet 90s linear infinite;
+}
+
+.planet-one {
+  width: 90px;
+  height: 90px;
+  top: 15%;
+  left: 80%;
+  background: radial-gradient(circle at 35% 30%, #f0b45e, #b5622a 70%);
+}
+
+.planet-two {
+  width: 50px;
+  height: 50px;
+  top: 65%;
+  left: 8%;
+  background: radial-gradient(circle at 35% 30%, #7fd7c4, #1d6e63 70%);
+  animation-duration: 130s;
+  animation-direction: reverse;
+}
+
+.planet-three {
+  width: 34px;
+  height: 34px;
+  top: 8%;
+  left: 30%;
+  background: radial-gradient(circle at 35% 30%, #c896f2, #5b2f95 70%);
+  animation-duration: 150s;
+  opacity: 0.7;
+}
+
+@keyframes driftPlanet {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-120px);
+  }
+}
+
+.asteroid {
+  position: absolute;
+  background: linear-gradient(135deg, #8b8398, #55506a);
+  opacity: 0.6;
+  animation: tumble linear infinite;
+}
+
+.asteroid-one {
+  width: 14px;
+  height: 12px;
+  top: 25%;
+  left: 40%;
+  border-radius: 40% 60% 55% 45% / 50% 40% 60% 50%;
+  animation-duration: 40s;
+}
+
+.asteroid-two {
+  width: 9px;
+  height: 8px;
+  top: 78%;
+  left: 65%;
+  border-radius: 55% 45% 40% 60% / 45% 55% 45% 55%;
+  animation-duration: 55s;
+  animation-direction: reverse;
+}
+
+.asteroid-three {
+  width: 11px;
+  height: 10px;
+  top: 50%;
+  left: 85%;
+  border-radius: 50% 50% 60% 40% / 55% 45% 55% 45%;
+  animation-duration: 65s;
+}
+
+@keyframes tumble {
+  from {
+    transform: translateX(0) rotate(0deg);
+  }
+  to {
+    transform: translateX(-100px) rotate(360deg);
+  }
+}
+
+.shooting-star {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: linear-gradient(90deg, #fff, transparent);
+  border-radius: 50%;
+  opacity: 0;
+  animation: shoot 6s linear infinite;
+}
+
+.shooting-star-one {
+  top: 15%;
+  left: 70%;
+  animation-delay: 0s;
+}
+
+.shooting-star-two {
+  top: 40%;
+  left: 20%;
+  animation-delay: 2.5s;
+}
+
+.shooting-star-three {
+  top: 65%;
+  left: 55%;
+  animation-delay: 4.5s;
+}
+
+@keyframes shoot {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0);
+    width: 2px;
+  }
+  2% {
+    opacity: 1;
+    width: 90px;
+  }
+  6% {
+    opacity: 0;
+    transform: translate(-220px, 140px);
+    width: 2px;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-220px, 140px);
+  }
+}
+
+/* =========================================================
+   Crewmate character + floating animation
+========================================================= */
+
+.crewmate {
+  filter: drop-shadow(0 10px 12px rgba(0, 0, 0, 0.45));
+  animation: floaty 4.5s ease-in-out infinite;
+}
+
+@keyframes floaty {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-14px);
+  }
+}
+
+.crewmate-clickable {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.crewmate-clickable:hover {
+  transform: scale(1.06);
+}
+
+/* a clicked crewmate "vents" away: shrinks, spins slightly and fades */
+.hero-crewmate-flown {
+  animation: ventAway 0.5s ease forwards !important;
+}
+
+@keyframes ventAway {
+  to {
+    transform: translateY(-60px) scale(0.3) rotate(15deg);
+    opacity: 0;
+  }
+}
+
+/* the tiny background "sus" crewmate cameo, walking across the page */
+.sus-crewmate {
+  position: absolute;
+  top: 88%;
+  left: -40px;
+  opacity: 0.55;
+  animation: susWalk 26s linear infinite;
+  animation-delay: 6s;
+}
+
+@keyframes susWalk {
+  0% {
+    transform: translateX(0);
+    opacity: 0;
+  }
+  4% {
+    opacity: 0.55;
+  }
+  46% {
+    opacity: 0.55;
+  }
+  50% {
+    transform: translateX(110vw);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(110vw);
+    opacity: 0;
+  }
+}
+
+/* =========================================================
+   Section scaffolding shared by About / Timeline / Guidelines
+   / Sponsors / FAQ. Each section gets a subtly tinted backdrop
+   in its own accent color so the page doesn't read as one
+   repeated blue/purple block from top to bottom.
+========================================================= */
+
+section {
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 6rem 1.5rem;
+}
+
+/* a faint seam between sections, like panel joints running down the
+   ship's corridor — gives the page continuity instead of feeling
+   like separate blocks dropped on the same background */
+section:not(.hero)::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(560px, 82%);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--space-border), transparent);
+  opacity: 0.6;
+}
+
+.section-label {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  border-radius: 999px;
+  padding: 0.35rem 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+  margin-bottom: 2.2rem;
+}
+
+/* per-section accent colors */
+.about .section-label {
+  color: var(--crew-teal);
+  background: rgba(53, 183, 196, 0.1);
+  border: 1px solid rgba(53, 183, 196, 0.35);
+}
+
+/* decorative crewmates peeking into a section from the corner,
+   partially overlapping the edge of the content like they just
+   walked in */
+/* decorative crewmates that interact with specific content instead
+   of just filling empty corners */
+.about-heading-crewmate {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 0.6rem;
+  transform: translateY(-6px);
+}
+
+.about-stat {
+  position: relative;
+}
+
+.about-stat-crewmate {
+  position: absolute;
+  bottom: -0.6rem;
+  right: -0.6rem;
+  z-index: 2;
+}
+
+.sponsors-crewmate {
+  position: absolute;
+  top: 55%;
+  transform: translateY(-50%);
+  z-index: 2;
+  opacity: 0.85;
+}
+
+.sponsors-crewmate-left {
+  left: -0.5rem;
+}
+
+.sponsors-crewmate-right {
+  right: -0.5rem;
+}
+
+@media (max-width: 900px) {
+  .sponsors-crewmate {
+    display: none;
+  }
+}
+
+@media (max-width: 700px) {
+  .about-heading-crewmate,
+  .about-stat-crewmate {
+    display: none;
+  }
+}
+
+.timeline .section-label {
+  color: var(--crew-blue);
+  background: rgba(61, 125, 216, 0.12);
+  border: 1px solid rgba(61, 125, 216, 0.35);
+}
+
+.guidelines .section-label {
+  color: var(--crew-green);
+  background: rgba(63, 174, 101, 0.12);
+  border: 1px solid rgba(63, 174, 101, 0.35);
+}
+
+.sponsors .section-label {
+  color: var(--crew-orange);
+  background: rgba(232, 134, 58, 0.12);
+  border: 1px solid rgba(232, 134, 58, 0.35);
+}
+
+.faq .section-label {
+  color: var(--crew-pink);
+  background: rgba(232, 133, 179, 0.12);
+  border: 1px solid rgba(232, 133, 179, 0.35);
+}
+
+/* =========================================================
+   Navbar
+========================================================= */
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.1rem 2rem;
+  background: rgba(18, 59, 74, 0.55);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(109, 159, 178, 0.18);
+}
+
+.navbar-logo-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.navbar-crewmate {
+  /* the crew ring uses a floaty bob animation everywhere else, but
+     next to logo text that motion reads as jittery, so it's held still */
+  animation: none;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.35));
+  transform: translateY(1px);
+}
+
+.navbar-logo {
+  font-family: var(--font-body);
+  font-weight: 800;
+  font-size: 1.15rem;
+  letter-spacing: 0.02em;
+}
+
+.navbar-logo span {
+  color: var(--crew-red);
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 1.4rem;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 2rem;
+}
+
+.navbar-links a {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  transition: color 0.2s ease;
+}
+
+.navbar-links a:hover {
+  color: var(--crew-yellow);
+}
+
+.navbar-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.navbar-toggle span {
+  width: 24px;
+  height: 2px;
+  background: var(--text-primary);
+}
+
+.sound-toggle {
+  background: var(--space-panel);
+  border: 1px solid var(--space-border);
+  border-radius: 999px;
+  width: 34px;
+  height: 34px;
+  font-size: 0.95rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.sound-toggle:hover {
+  border-color: var(--crew-teal);
+  transform: translateY(-2px);
+}
+
+/* the emergency-meeting easter egg overlay */
+.emergency-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  background: rgba(120, 20, 20, 0.88);
+  animation: emergencyFlash 0.4s ease;
+  pointer-events: none;
+}
+
+@keyframes emergencyFlash {
+  0% {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.emergency-text {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 6vw, 3.2rem);
+  letter-spacing: 0.04em;
+  color: #fff;
+  text-shadow: 0 4px 0 rgba(0, 0, 0, 0.25);
+}
+
+.emergency-subtext {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.75);
+  font-weight: 600;
+}
+
+/* =========================================================
+   Intro screen
+========================================================= */
+
+.intro {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+  background: var(--space-deep);
+  transition: opacity 0.7s ease;
+  padding: 1.5rem;
+}
+
+.intro-exiting {
+  opacity: 0;
+}
+
+/* faint overhead light that occasionally flickers, like a strip
+   light on a spaceship corridor that's due for maintenance */
+.intro-lights {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% -10%, rgba(255, 255, 255, 0.08), transparent 55%);
+  animation: introFlicker 6s ease-in-out infinite;
+}
+
+@keyframes introFlicker {
+  0%, 88%, 92%, 100% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 0.35;
+  }
+  91% {
+    opacity: 0.85;
+  }
+}
+
+@keyframes introReveal {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---- "Find The Impostor" mini-game ---- */
+
+.intro-game {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 640px;
+}
+
+.intro-alert {
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  font-size: 0.8rem;
+  color: var(--crew-red);
+  opacity: 0;
+  animation: fadeIn 0.8s ease 0.2s forwards, alertPulse 1.6s ease-in-out 1s infinite;
+}
+
+.intro-alert-success {
+  color: var(--crew-green);
+  animation: fadeIn 0.5s ease forwards;
+}
+
+@keyframes alertPulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.intro-title-small {
+  font-size: clamp(1.6rem, 5vw, 2.6rem);
+  margin-top: 0.6rem;
+  opacity: 0;
+  animation: fadeIn 0.8s ease 0.4s forwards;
+}
+
+.intro-game .intro-subtitle {
+  opacity: 0;
+  animation: fadeIn 0.8s ease 0.7s forwards;
+}
+
+.intro-suspects {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 2.2rem;
+}
+
+.intro-suspect {
+  background: rgba(20, 55, 68, 0.55);
+  border: 1px solid var(--space-border);
+  border-radius: var(--radius-md);
+  padding: 0.6rem 0.5rem 0.3rem;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(16px);
+  animation: introReveal 0.5s ease forwards, floaty 4.5s ease-in-out 1s infinite;
+  transition: transform 0.2s ease, border-color 0.2s ease, opacity 0.3s ease;
+}
+
+.intro-suspect:hover:not(:disabled) {
+  transform: translateY(-6px);
+  border-color: var(--crew-cyan);
+}
+
+.intro-suspect:disabled {
+  cursor: default;
+}
+
+/* the impostor gets a slightly quicker, shiftier idle wobble than
+   the rest of the lineup — a small tell for a sharp-eyed player */
+.intro-suspect-imposter .crewmate {
+  animation: susWobble 2.1s ease-in-out infinite;
+}
+
+@keyframes susWobble {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-4deg);
+  }
+  75% {
+    transform: rotate(4deg);
+  }
+}
+
+.intro-suspect-wrong {
+  animation: introReveal 0.5s ease forwards, shakeSuspect 0.4s ease;
+  border-color: var(--crew-red);
+}
+
+@keyframes shakeSuspect {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-6px);
+  }
+  75% {
+    transform: translateX(6px);
+  }
+}
+
+.intro-suspect-cleared {
+  opacity: 0.3 !important;
+  filter: grayscale(80%);
+  animation: none !important;
+}
+
+.intro-feedback {
+  margin-top: 1.4rem;
+  min-height: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  font-size: 0.85rem;
+  color: var(--crew-red);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.intro-feedback-show {
+  opacity: 1;
+}
+
+/* ---- success state ---- */
+
+.intro-content {
+  position: relative;
+  z-index: 2;
+}
+
+.intro-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 7vw, 4.5rem);
+  letter-spacing: 0.03em;
+  background: linear-gradient(90deg, var(--crew-red), var(--crew-yellow) 45%, var(--crew-blue) 85%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  opacity: 0;
+  animation: fadeIn 0.8s ease 0.5s forwards;
+}
+
+.intro-subtitle {
+  margin-top: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  font-size: 0.85rem;
+  color: var(--crew-yellow);
+  opacity: 0;
+  animation: fadeIn 0.8s ease 0.8s forwards;
+}
+
+.intro-button {
+  margin-top: 2.2rem;
+  opacity: 0;
+  animation: fadeIn 0.8s ease 1.1s forwards;
+}
+
+/* ---- door-opening transition, plays when Enter is clicked ---- */
+
+.intro-doors {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  display: flex;
+}
+
+.intro-door {
+  flex: 1;
+  background: linear-gradient(180deg, var(--space-panel-light), var(--space-navy));
+  border: 1px solid var(--space-border);
+  transition: transform 0.65s cubic-bezier(0.7, 0, 0.3, 1);
+}
+
+.intro-door-left {
+  border-right: 2px solid var(--crew-yellow);
+  transform: translateX(-100%);
+}
+
+.intro-door-right {
+  border-left: 2px solid var(--crew-yellow);
+  transform: translateX(100%);
+}
+
+/* doors start off-screen; sliding them fully across on open makes it
+   read as the corridor doors slamming shut before the transition */
+.intro-doors-open .intro-door-left {
+  transform: translateX(0);
+}
+
+.intro-doors-open .intro-door-right {
+  transform: translateX(0);
+}
+
+/* =========================================================
+   Hero
+========================================================= */
+
+.hero {
+  position: relative;
+  max-width: 1100px;
+  min-height: 520px;
+  padding-top: 3.2rem;
+  padding-bottom: 2.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* a soft porthole glow behind the whole composition, like looking
+   out of the ship into the mission briefing room */
+.hero-porthole {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(560px, 80vw);
+  height: min(560px, 80vw);
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(103, 232, 249, 0.08), transparent 72%);
+  z-index: 0;
+}
+
+.hero-eyebrow {
+  color: var(--crew-cyan);
+  font-weight: 700;
+  font-size: 0.85rem;
+  margin-bottom: 0.8rem;
+}
+
+.hero-title {
+  position: relative;
+  z-index: 2;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2.6rem, 7vw, 4.6rem);
+  line-height: 1.15;
+  letter-spacing: 0.01em;
+  text-shadow: 0 4px 0 rgba(11, 38, 51, 0.6), 0 10px 24px rgba(11, 38, 51, 0.5);
+}
+
+.hero-title-accent {
+  color: var(--crew-red);
+}
+
+.hero-tagline {
+  margin-top: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--crew-yellow);
+  font-size: 1.05rem;
+}
+
+.hero-description {
+  margin: 1.2rem auto 0;
+  max-width: 46ch;
+  color: var(--text-muted);
+}
+
+.hero-actions {
+  margin-top: 2rem;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hero-task-panel {
+  margin-top: 1.8rem;
+  background: linear-gradient(160deg, var(--space-panel), var(--space-panel-light));
+  border: 1px solid var(--space-border);
+  border-radius: var(--radius-lg);
+  padding: 1rem 1.4rem;
+  max-width: 320px;
+  text-align: left;
+}
+
+.hero-task-panel-title {
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  color: var(--text-muted);
+  margin-bottom: 0.7rem;
+}
+
+.hero-task-panel li {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.9rem;
+  padding: 0.35rem 0;
+}
+
+.hero-task-panel li:nth-child(1) .task-dot {
+  background: var(--crew-green);
+}
+.hero-task-panel li:nth-child(2) .task-dot {
+  background: var(--crew-yellow);
+}
+.hero-task-panel li:nth-child(3) .task-dot {
+  background: var(--crew-blue);
+}
+
+.task-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--crew-green);
+  flex-shrink: 0;
+}
+
+/* the crew is arranged in a ring around the centered title, like a
+   crew gathered for a mission briefing rather than off to one side */
+.hero-crew {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.hero-crew .crewmate-clickable {
+  pointer-events: auto;
+}
+
+.hero-vent {
+  position: absolute;
+  width: 90px;
+  height: 60px;
+  background: repeating-linear-gradient(90deg, var(--space-panel-light) 0 8px, var(--space-panel) 8px 16px);
+  border: 2px solid var(--space-border);
+  border-radius: 8px;
+  opacity: 0.6;
+  z-index: 0;
+}
+
+.hero-vent-left {
+  top: 4%;
+  left: 2%;
+}
+
+.hero-vent-right {
+  bottom: 8%;
+  right: 3%;
+}
+
+.hero-wire {
+  position: absolute;
+  border-left: 2px dashed var(--space-border);
+  opacity: 0.5;
+  z-index: 0;
+}
+
+.hero-wire-one {
+  top: 10%;
+  left: 8%;
+  height: 20%;
+}
+
+.hero-wire-two {
+  bottom: 10%;
+  right: 10%;
+  height: 18%;
+}
+
+.hero-crewmate {
+  position: absolute;
+}
+
+.hero-crewmate-red {
+  bottom: 4%;
+  left: 20%;
+  z-index: 4;
+}
+
+.hero-crewmate-yellow {
+  bottom: 8%;
+  right: 18%;
+  z-index: 3;
+}
+
+.hero-crewmate-blue {
+  top: 8%;
+  left: 8%;
+  z-index: 3;
+}
+
+.hero-crewmate-green {
+  top: 12%;
+  right: 10%;
+  z-index: 2;
+}
+
+.hero-crewmate-cyan {
+  bottom: 24%;
+  left: 4%;
+  z-index: 2;
+  opacity: 0.9;
+}
+
+.hero-crewmate-pink {
+  top: 30%;
+  right: 2%;
+  z-index: 2;
+  opacity: 0.9;
+}
+
+.hero-crewmate-purple {
+  bottom: 30%;
+  right: 6%;
+  z-index: 1;
+  opacity: 0.7;
+}
+
+.hero-crewmate-orange {
+  top: 4%;
+  left: 32%;
+  z-index: 1;
+  opacity: 0.7;
+}
+
+/* =========================================================
+   About — tinted teal
+========================================================= */
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+.about-text p {
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+  max-width: 55ch;
+}
+
+.about-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
+}
+
+.about-stat {
+  background: linear-gradient(160deg, rgba(53, 183, 196, 0.14), var(--space-panel));
+  border: 1px solid var(--space-border);
+  border-radius: var(--radius-lg);
+  padding: 1.4rem;
+  text-align: center;
+}
+
+.about-stat-number {
+  font-family: var(--font-body);
+  font-weight: 800;
+  font-size: 2rem;
+  color: var(--crew-teal);
+}
+
+.about-stat-label {
+  margin-top: 0.3rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* =========================================================
+   Timeline — tinted blue
+========================================================= */
+
+.timeline-track {
+  position: relative;
+  padding-left: 2.5rem;
+  border-left: 2px dashed var(--space-border);
+}
+
+.timeline-item {
+  position: relative;
+  padding-bottom: 2.4rem;
+  padding-right: 5.5rem;
+}
+
+.timeline-item:last-child {
+  padding-bottom: 0;
+}
+
+.timeline-marker {
+  position: absolute;
+  left: -3.05rem;
+  top: 0;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  /* background color comes from an inline style per task */
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+  border: 3px solid var(--space-deep);
+}
+
+.timeline-check {
+  font-size: 1rem;
+}
+
+.timeline-crewmate {
+  position: absolute;
+  right: 0;
+  top: -0.3rem;
+}
+
+.timeline-date {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  color: var(--crew-yellow);
+  margin-bottom: 0.3rem;
+}
+
+.timeline-title {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 1.15rem;
+  margin-bottom: 0.4rem;
+}
+
+.timeline-description {
+  color: var(--text-muted);
+  max-width: 55ch;
+}
+
+/* =========================================================
+   Guidelines — tinted green
+========================================================= */
+
+.guidelines-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.4rem 2.5rem;
+}
+
+.guideline-item {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  padding-bottom: 1.2rem;
+  border-bottom: 1px solid var(--space-border);
+}
+
+.guideline-check {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(63, 174, 101, 0.18);
+  color: var(--crew-green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.guideline-item:nth-child(3n+2) .guideline-check {
+  background: rgba(245, 201, 69, 0.18);
+  color: var(--crew-yellow);
+}
+
+.guideline-item:nth-child(3n+3) .guideline-check {
+  background: rgba(232, 134, 58, 0.18);
+  color: var(--crew-orange);
+}
+
+.guideline-title {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 1.05rem;
+  margin-bottom: 0.3rem;
+}
+
+.guideline-description {
+  color: var(--text-muted);
+  font-size: 0.92rem;
+}
+
+/* =========================================================
+   Sponsors — square cards in a looping marquee
+========================================================= */
+
+/* fades the edges so cards entering/leaving don't hard-cut, and
+   clips the doubled track so it never causes page-level scroll */
+.sponsor-marquee {
+  margin-top: 1rem;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+.sponsor-track {
+  display: flex;
+  gap: 1.2rem;
+  width: max-content;
+  animation: sponsorScroll 32s linear infinite;
+}
+
+/* the list was duplicated in Sponsors.jsx, so animating exactly to
+   -50% lines the second copy up with where the first one started —
+   that's what makes the loop look seamless instead of jumping */
+@keyframes sponsorScroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.sponsor-marquee:hover .sponsor-track {
+  animation-play-state: paused;
+}
+
+.sponsor-card {
+  flex: 0 0 auto;
+  width: 150px;
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: linear-gradient(160deg, var(--space-panel), var(--space-panel-light));
+  border: 2px solid var(--space-border);
+  border-radius: var(--radius-lg);
+  padding: 1rem;
+  text-align: center;
+  box-shadow: 0 8px 18px rgba(5, 15, 20, 0.35);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.sponsor-card:hover {
+  transform: translateY(-6px) scale(1.05);
+  box-shadow: 0 14px 24px rgba(5, 15, 20, 0.4);
+}
+
+.sponsor-card-tier {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.sponsor-card-name {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  line-height: 1.25;
+}
+
+@media (max-width: 900px) {
+  .sponsor-card {
+    width: 120px;
+    height: 120px;
+  }
+
+  .sponsor-track {
+    gap: 1rem;
+    animation-duration: 26s;
+  }
+}
+
+@media (max-width: 600px) {
+  .sponsor-card {
+    width: 96px;
+    height: 96px;
+    padding: 0.7rem;
+  }
+
+  .sponsor-card-name {
+    font-size: 0.78rem;
+  }
+
+  .sponsor-track {
+    gap: 0.8rem;
+    animation-duration: 20s;
+  }
+}
+
+/* =========================================================
+   FAQ — tinted pink
+========================================================= */
+
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+/* one "comms" row per question — looks like a contact list entry,
+   not a generic accordion card */
+.faq-row {
+  background: var(--space-panel);
+  border: 1px solid var(--space-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: border-color 0.2s ease;
+}
+
+.faq-row-open {
+  border-color: var(--crew-pink);
+}
+
+.faq-question {
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.96rem;
+  padding: 0.85rem 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  cursor: pointer;
+}
+
+.faq-avatar {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.04);
+  border: 2px solid var(--faq-color, var(--space-border));
+}
+
+.faq-question-text {
+  flex: 1;
+}
+
+/* three little "signal" bars instead of a plain +/- icon, like a
+   comms channel waiting to be opened */
+.faq-signal {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.faq-signal span {
+  width: 4px;
+  border-radius: 2px;
+  background: var(--space-border);
+  transition: background 0.2s ease, height 0.2s ease;
+}
+
+.faq-signal span:nth-child(1) {
+  height: 6px;
+}
+.faq-signal span:nth-child(2) {
+  height: 11px;
+}
+.faq-signal span:nth-child(3) {
+  height: 16px;
+}
+
+.faq-row-open .faq-signal span {
+  background: var(--crew-green);
+  animation: faqSignalPulse 1.1s ease-in-out infinite;
+}
+
+.faq-row-open .faq-signal span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+.faq-row-open .faq-signal span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes faqSignalPulse {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* the crewmate + speech-bubble reveal */
+.faq-answer-wrap {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease;
+}
+
+.faq-row-open .faq-answer-wrap {
+  max-height: 220px;
+}
+
+.faq-answer {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9rem;
+  padding: 0 1.2rem 1.2rem 1.2rem;
+}
+
+.faq-answer-crewmate {
+  flex-shrink: 0;
+  opacity: 0;
+  transform: translateX(-12px);
+  transition: opacity 0.3s ease 0.05s, transform 0.3s ease 0.05s;
+}
+
+.faq-row-open .faq-answer-crewmate {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.faq-bubble {
+  position: relative;
+  background: rgba(11, 38, 51, 0.6);
+  border: 1px solid var(--faq-color, var(--space-border));
+  border-radius: 4px 14px 14px 14px;
+  padding: 0.8rem 1rem;
+  color: var(--text-muted);
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity 0.3s ease 0.1s, transform 0.3s ease 0.1s;
+}
+
+.faq-row-open .faq-bubble {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* little speech-bubble tail pointing back at the crewmate */
+.faq-bubble::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  left: -7px;
+  width: 12px;
+  height: 12px;
+  background: rgba(11, 38, 51, 0.6);
+  border-left: 1px solid var(--faq-color, var(--space-border));
+  border-bottom: 1px solid var(--faq-color, var(--space-border));
+  transform: rotate(45deg);
+}
+
+.faq-task-complete {
+  margin-top: 0.5rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--crew-green);
+}
+
+/* =========================================================
+   Footer
+========================================================= */
+
+.footer {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 3.5rem 1.5rem 2.5rem;
+  border-top: 1px solid var(--space-border);
+}
+
+.footer-panel-lights {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1.2rem;
+}
+
+.footer-panel-lights span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--crew-green);
+  animation: twinkle 2s ease-in-out infinite;
+}
+
+.footer-panel-lights span:nth-child(2) {
+  background: var(--crew-yellow);
+  animation-delay: 0.4s;
+}
+
+.footer-panel-lights span:nth-child(3) {
+  background: var(--crew-red);
+  animation-delay: 0.8s;
+}
+
+.footer-logo {
+  font-family: var(--font-body);
+  font-weight: 800;
+  font-size: 1.2rem;
+}
+
+.footer-logo span {
+  color: var(--crew-red);
+}
+
+.footer-tagline {
+  margin-top: 0.4rem;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.footer-links {
+  margin-top: 1.4rem;
+  display: flex;
+  justify-content: center;
+  gap: 1.6rem;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.footer-links a:hover {
+  color: var(--crew-yellow);
+}
+
+.footer-copyright {
+  margin-top: 1.6rem;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  opacity: 0.7;
+}
+
+/* =========================================================
+   Responsive
+========================================================= */
+
+@media (max-width: 900px) {
+  .hero {
+    min-height: 560px;
+    padding-top: 6.5rem;
+  }
+
+  .hero-crewmate-orange,
+  .hero-crewmate-purple {
+    display: none;
+  }
+
+  .about-grid,
+  .guidelines-list {
+    grid-template-columns: 1fr;
+  }
+
+  .timeline-crewmate {
+    display: none;
+  }
+
+  .timeline-item {
+    padding-right: 0;
+  }
+}
+
+@media (max-width: 700px) {
+  .hero-crewmate-cyan,
+  .hero-crewmate-pink {
+    display: none;
+  }
+
+  .navbar-toggle {
+    display: flex;
+  }
+
+  .navbar-links {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--space-navy);
+    flex-direction: column;
+    gap: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+
+  .navbar-links-open {
+    max-height: 400px;
+  }
+
+  .navbar-links li {
+    border-top: 1px solid var(--space-border);
+  }
+
+  .navbar-links a {
+    display: block;
+    padding: 1rem 2rem;
+  }
+
+  section {
+    padding: 4rem 1.2rem;
+  }
+}
